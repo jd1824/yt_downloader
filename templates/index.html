@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+<script>
+    function sender_data(){
+        document.getElementById('vid_response').innerText="Preparando...";
+        const data = {name:document.getElementById('name').value};
+        fetch('http://192.168.0.178:8000/api/data/video', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => document.getElementById('response').innerText = data.received_data)
+
+    };
+
+    function return_video() {
+        document.getElementById('vid').innerText="Descargando"
+        document.location.replace("http://192.168.0.178:8000/redirect/video")
+        .then(fetch("http://192.168.0.178/delete/video", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }))
+    }
+
+    function sender_aud_data() {
+        document.getElementById('aud_response').innerText="Preparando...";
+        const data = {name_aud:document.getElementById('name_aud').value};
+        fetch('http://192.168.0.178:8000/api/data/audio', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => document.getElementById('aud_response').innerText = data.received_data)
+    }
+
+    function return_audio() {
+        document.getElementById('aud').innerText="Descargando"
+        document.location.replace("http://192.168.0.178:8000/redirect/audio")
+       // document.getElementById("aud").innerText =
+    }
+</script>
+
+</head>
+
+<body>
+
+    <h2>Descargar video</h2>
+    <input type="text" id="name" placeholder="URL Youtube">
+    <button onclick="sender_data()">Preparar video</button>
+    <button onclick="return_video()">Descargar video</button>
+    <p id="vid_response"></p>
+    <p id="vid"></p>
+
+    <h2>Descargar audio</h2>
+    <input type="text" id="name_aud" placeholder="URL Youtube">
+    <button onclick="sender_aud_data()">Preparar audio</button>
+    <button onclick="return_audio()">Descargar audio</button>
+    <p id="aud_response"></p>
+    <p id="aud"></p>
+</body>
+</html>
