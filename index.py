@@ -59,7 +59,7 @@ def redirect_video():
     return RedirectResponse(url="http://0.0.0.0:8000/download/video", status_code=302)
 
 @app.get("/redirect/audio")
-def redirect_video():
+def redirect_audio():
     return RedirectResponse(url="http://0.0.0.0:8000/download/audio", status_code=302)
 
 @app.get("/download/video")
