@@ -4,8 +4,8 @@ from downloader.downloader import download_video, download_audio
 #from downloader.filtro import eliminar_video
 from fastapi.templating import Jinja2Templates
 from os import listdir, remove
-import asyncio
-import time
+# import asyncio
+# import time
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.jobstores.memory import MemoryJobStore 
 #from pydantic import BaseModel

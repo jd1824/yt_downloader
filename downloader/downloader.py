@@ -32,8 +32,8 @@ def download_audio(link):
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([link])
             #print(ydl.params)
-            info = ydl.extract_info(link, download=False)
-            title = info.get("title", None)
+            # info = ydl.extract_info(link, download=False)
+            # title = info.get("title", None)
         
         convert()
 

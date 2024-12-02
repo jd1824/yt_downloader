@@ -22,7 +22,7 @@
     };
 
     function return_video() {
-        document.getElementById('vid').innerText="Descargando"
+        document.getElementById('vid').innerText="Descarga iniciada"
         document.location.replace("http://192.168.0.178:8000/redirect/video")
         .then(fetch("http://192.168.0.178/delete/video", {
             method: "GET",
@@ -47,7 +47,7 @@
     }
 
     function return_audio() {
-        document.getElementById('aud').innerText="Descargando"
+        document.getElementById('aud').innerText="Descarga iniciada"
         document.location.replace("http://192.168.0.178:8000/redirect/audio")
        // document.getElementById("aud").innerText =
     }
