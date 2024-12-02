@@ -38,17 +38,17 @@ def index(request: Request):
     return templates.TemplateResponse(request=request, name="index.html")
 
 @app.post("/api/data/video")
-async def received_data(request: Request):
+async def received_vid_data(request: Request):
     link = await request.json()
     link_url = link["name"]
-    file = download_video(link_url)
+    download_video(link_url)
     return JSONResponse({'received_data': 'Video preparado'})
 
 @app.post("/api/data/audio")
-async def received_data(request: Request):
+async def received_aud_data(request: Request):
     link = await request.json()
     link_url = link["name_aud"]
-    file = download_audio(link_url)
+    download_audio(link_url)
     try:
         return JSONResponse({'received_data': 'Audio preparado'})
     except BaseException:
