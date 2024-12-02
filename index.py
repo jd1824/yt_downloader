@@ -56,11 +56,11 @@ async def received_data(request: Request):
 
 @app.get("/redirect/video")
 def redirect_video():
-    return RedirectResponse(url="http://192.168.0.178:8000/download/video", status_code=302)
+    return RedirectResponse(url="http://0.0.0.0:8000/download/video", status_code=302)
 
 @app.get("/redirect/audio")
 def redirect_video():
-    return RedirectResponse(url="http://192.168.0.178:8000/download/audio", status_code=302)
+    return RedirectResponse(url="http://0.0.0.0:8000/download/audio", status_code=302)
 
 @app.get("/download/video")
 async def download_video():
@@ -89,7 +89,7 @@ async def download_audio_yt():
         mark_for_deletion(file)
         return FileResponse(file[0], filename=file[0])
     else:
-        return RedirectResponse("http://192.168.0.178:8000/")
+        return RedirectResponse("http://0.0.0.0:8000/")
     
 @app.on_event("startup")
 async def start_scheduler():
