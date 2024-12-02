@@ -63,7 +63,7 @@ def redirect_audio():
     return RedirectResponse(url="http://0.0.0.0:8000/download/audio", status_code=302)
 
 @app.get("/download/video")
-async def download_video():
+async def download_vid():
     #id2 = id.replace(r"https%3A//www.youtube.com/watch%3Fv%3D", "")
     files = listdir()
     file =  [file for file in files if file.endswith(".mp4")]
