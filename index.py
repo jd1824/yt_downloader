@@ -92,6 +92,10 @@ async def download_audio_yt():
         return FileResponse(file[0], filename=file[0])
     else:
         return RedirectResponse("fhttp://{ip}/")
+
+@app.head("/timer")
+def timer():
+    return "hola mundo"
     
 @app.on_event("startup")
 async def start_scheduler():
