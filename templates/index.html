@@ -6,10 +6,12 @@
     <title>Document</title>
 
 <script>
+
+
     function sender_data(){
         document.getElementById('vid_response').innerText="Preparando...";
         const data = {name:document.getElementById('name').value};
-        fetch('http://0.0.0.0:8000/api/data/video', {
+        fetch('/api/data/video', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -23,19 +25,13 @@
 
     function return_video() {
         document.getElementById('vid').innerText="Descarga iniciada"
-        document.location.replace("http://0.0.0.0:8000/redirect/video")
-        .then(fetch("http://0.0.0.0/delete/video", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }))
+        document.location.replace("/redirect/video")
     }
 
     function sender_aud_data() {
         document.getElementById('aud_response').innerText="Preparando...";
         const data = {name_aud:document.getElementById('name_aud').value};
-        fetch('http://0.0.0.0:8000/api/data/audio', {
+        fetch('/api/data/audio', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -48,7 +44,7 @@
 
     function return_audio() {
         document.getElementById('aud').innerText="Descarga iniciada"
-        document.location.replace("http://0.0.0.0:8000/redirect/audio")
+        document.location.replace("/redirect/audio")
        // document.getElementById("aud").innerText =
     }
 </script>
