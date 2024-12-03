@@ -8,17 +8,12 @@ from os import listdir, remove
 # import time
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.jobstores.memory import MemoryJobStore 
-import socket
 #from pydantic import BaseModel
 
 app = FastAPI()
 
 templates = Jinja2Templates(directory="templates")
 
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.connect(("8.8.8.8", 80))
-ip = s.getsockname()[0]
-s.close()
 
 def mark_for_deletion(filename):
     # Simula una marca para eliminación (en un sistema real, podrías usar una base de datos)
@@ -49,7 +44,7 @@ async def received_vid_data(request: Request):
     link_url = link["name"]
     download_video(link_url)
     client_host = request.client.host
-    return JSONResponse({'received_data': 'Video preparado', "ip": client_host})
+    return JSONResponse({'received_data': 'Video preparado'})
 
 @app.post("/api/data/audio")
 async def received_aud_data(request: Request):
@@ -63,11 +58,11 @@ async def received_aud_data(request: Request):
 
 @app.get("/redirect/video")
 def redirect_video():
-    return RedirectResponse(url=f"http://{ip}/download/video", status_code=302)
+    return RedirectResponse(url=f"/download/video", status_code=302)
 
 @app.get("/redirect/audio")
 def redirect_audio():
-    return RedirectResponse(url=f"http://{ip}/download/audio", status_code=302)
+    return RedirectResponse(url="/download/audio", status_code=302)
 
 @app.get("/download/video")
 async def download_vid():
