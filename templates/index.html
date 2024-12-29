@@ -5,12 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-<script>
+<style>
+     .button {
+      border: none;
+      color: white;
+      padding: 14px 25px;
+      cursor: pointer;
+      border-radius: 5px;
+      }
 
+      .primary {background-color: #007bff; margin-right: 5px;}
+      .primary:hover {background: #0b7dda;}
+
+      .secondary {background-color: #389b11; margin-right: 5px;}
+      .secondary:hover {background: #30ad0a;}
+
+      html {
+        font-size: 10px;
+      }
+
+      h2 {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 2.6rem;
+        color: #c4302b;
+        /* -webkit-text-stroke-width: 0.75px;
+        -webkit-text-stroke-color: #c4302b; */
+      }
+
+      p {
+        font-size: medium;
+        color: white;
+      }
+
+      .input {
+        border-radius: 5px;
+      }
+
+      .vid {border: 2px solid #c4302b; width: 80%; height: 35px; margin-bottom: 10px; margin-right: 5px;}
+
+      .aud {border: 2px solid #389b11; width: 80%; height: 35px; margin-bottom: 10px; margin-right: 5px;}
+
+
+    </style>
+</style>
+
+<script>
 
     function sender_data(){
         document.getElementById('vid_response').innerText="Preparando...";
         const data = {name:document.getElementById('name').value};
+        if (data.name.length == 0) {
+            document.getElementById("vid_response").innerText = "Ingrese una url"
+            return 0
+        }
         fetch('/api/data/video', {
             method: 'POST',
             headers: {
@@ -19,7 +66,7 @@
             body: JSON.stringify(data),
         })
         .then(response => response.json())
-        .then(data => document.getElementById('response').innerText = data.received_data)
+        .then(data => document.getElementById('vid_response').innerText = data.received_data)
 
     };
 
@@ -31,6 +78,10 @@
     function sender_aud_data() {
         document.getElementById('aud_response').innerText="Preparando...";
         const data = {name_aud:document.getElementById('name_aud').value};
+        if (data.name_aud.length == 0) {
+            document.getElementById("aud_response").innerText = "Ingrese una url"
+            return 0
+        }
         fetch('/api/data/audio', {
             method: 'POST',
             headers: {
@@ -40,6 +91,7 @@
         })
         .then(response => response.json())
         .then(data => document.getElementById('aud_response').innerText = data.received_data)
+        .then(download_aud_btn.hidden = false)
     }
 
     function return_audio() {
@@ -47,24 +99,52 @@
         document.location.replace("/redirect/audio")
        // document.getElementById("aud").innerText =
     }
+
 </script>
 
 </head>
 
-<body>
+ <body bgcolor="#1b1b1a">
 
     <h2>Descargar video</h2>
-    <input type="text" id="name" placeholder="URL Youtube">
-    <button onclick="sender_data()">Preparar video</button>
-    <button onclick="return_video()">Descargar video</button>
+    <input type="text" id="name" placeholder="URL Youtube" class="input vid">
+    <button onclick="sender_data()" class="button primary" id="prepare_vid_btn">Preparar video</button>
+    <button onclick="return_video()" class="button primary"  id="download_vid_btn" hidden>Descargar video</button>
     <p id="vid_response"></p>
     <p id="vid"></p>
 
     <h2>Descargar audio</h2>
-    <input type="text" id="name_aud" placeholder="URL Youtube">
-    <button onclick="sender_aud_data()">Preparar audio</button>
-    <button onclick="return_audio()">Descargar audio</button>
+    <input type="text" id="name_aud" placeholder="URL Youtube" class="input aud">
+    <button onclick="sender_aud_data()" class="button secondary" id="prepare_aud_btn">Preparar audio</button>
+    <button onclick="return_audio()" class="button secondary"  id="download_aud_btn" hidden>Descargar audio</button>
     <p id="aud_response"></p>
     <p id="aud"></p>
+
+
+    <script>
+        const prepare_vid_btn = document.getElementById("prepare_vid_btn")
+        const download_vid_btn = document.getElementById("download_vid_btn")
+
+        prepare_vid_btn.addEventListener("click", function() {
+            download_vid_btn.hidden = false
+        });
+
+        download_vid_btn.addEventListener("click", function() {
+            download_vid_btn.disabled = true
+        })
+
+        const prepare_aud_btn = document.getElementById("prepare_aud_btn")
+        const download_aud_btn = document.getElementById("download_aud_btn")
+
+        // prepare_aud_btn.addEventListener("click", function() {
+        //     //download_aud_btn.disabled = false
+        //     download_aud_btn.hidden = false
+        // })
+
+        // download_aud_btn.addEventListener("click", function() {
+        //     download_aud_btn.disabled = true
+        // })
+    </script>
+
 </body>
 </html>

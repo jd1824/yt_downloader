@@ -43,7 +43,7 @@ async def received_vid_data(request: Request):
     link = await request.json()
     link_url = link["name"]
     download_video(link_url)
-    client_host = request.client.host
+    #client_host = request.client.host
     return JSONResponse({'received_data': 'Video preparado'})
 
 @app.post("/api/data/audio")
@@ -58,7 +58,7 @@ async def received_aud_data(request: Request):
 
 @app.get("/redirect/video")
 def redirect_video():
-    return RedirectResponse(url=f"/download/video", status_code=302)
+    return RedirectResponse(url="/download/video", status_code=302)
 
 @app.get("/redirect/audio")
 def redirect_audio():
@@ -76,7 +76,7 @@ async def download_vid():
         return FileResponse(file[0], filename=file[0])
     
     else:
-        return "Archivo inexistente"
+        return RedirectResponse("/")
     # finally:
     #     await asyncio.sleep(0)
     #     remove(file[0])
@@ -91,7 +91,7 @@ async def download_audio_yt():
         mark_for_deletion(file)
         return FileResponse(file[0], filename=file[0])
     else:
-        return RedirectResponse("fhttp://{ip}/")
+        return RedirectResponse("/")
 
 @app.head("/timer")
 def timer():
