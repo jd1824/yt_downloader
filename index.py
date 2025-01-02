@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
 from downloader.downloader import download_video, download_audio
+from downloader.validator import url_validator
 #from downloader.filtro import eliminar_video
 from fastapi.templating import Jinja2Templates
 from os import listdir, remove
@@ -8,7 +9,7 @@ from os import listdir, remove
 # import time
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.jobstores.memory import MemoryJobStore 
-#from pydantic import BaseModel
+#from pydantic import BaseMode
 
 app = FastAPI()
 
@@ -42,19 +43,40 @@ def index(request: Request):
 async def received_vid_data(request: Request):
     link = await request.json()
     link_url = link["name"]
-    download_video(link_url)
-    #client_host = request.client.host
-    return JSONResponse({'received_data': 'Video preparado'})
+    files = listdir()
+    file =  [file for file in files if file.endswith(".mp4")]
+
+    if url_validator(link_url):
+
+        if len(file) > 0:
+            mark_for_deletion(file)
+            cleanup()
+            
+        download_video(link_url)
+        return JSONResponse({'received_data': 'Video preparado'})
+    
+    else:
+        return JSONResponse({"received_data": "Ingrese una url valida"})
 
 @app.post("/api/data/audio")
 async def received_aud_data(request: Request):
     link = await request.json()
     link_url = link["name_aud"]
-    download_audio(link_url)
-    try:
+
+    files = listdir()
+    file =  [file for file in files if file.endswith(".mp3")]
+
+    if url_validator(link_url):
+        if len(file) > 0:
+            mark_for_deletion(file)
+            cleanup()
+
+        download_audio(link_url)
         return JSONResponse({'received_data': 'Audio preparado'})
-    except BaseException:
-        return JSONResponse({"received_data": "Ingrese la url"})
+    
+    else:
+        return JSONResponse({'received_data': 'Ingrese una url valida'})
+
 
 @app.get("/redirect/video")
 def redirect_video():
@@ -97,8 +119,8 @@ async def download_audio_yt():
 def timer():
     return "hola mundo"
     
-@app.on_event("startup")
-async def start_scheduler():
-    scheduler = AsyncIOScheduler(jobstores={'default': MemoryJobStore()})
-    scheduler.add_job(cleanup, 'interval', seconds=30)
-    scheduler.start()
+# @app.on_event("startup")
+# async def start_scheduler():
+#     scheduler = AsyncIOScheduler(jobstores={'default': MemoryJobStore()})
+#     scheduler.add_job(cleanup, 'interval', seconds=1)
+#     scheduler.start()

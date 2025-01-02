@@ -67,6 +67,7 @@
         })
         .then(response => response.json())
         .then(data => document.getElementById('vid_response').innerText = data.received_data)
+        .then(prepare_vid_btn.hidden = false)
 
     };
 
@@ -124,14 +125,6 @@
     <script>
         const prepare_vid_btn = document.getElementById("prepare_vid_btn")
         const download_vid_btn = document.getElementById("download_vid_btn")
-
-        prepare_vid_btn.addEventListener("click", function() {
-            download_vid_btn.hidden = false
-        });
-
-        download_vid_btn.addEventListener("click", function() {
-            download_vid_btn.disabled = true
-        })
 
         const prepare_aud_btn = document.getElementById("prepare_aud_btn")
         const download_aud_btn = document.getElementById("download_aud_btn")
