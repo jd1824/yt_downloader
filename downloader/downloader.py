@@ -25,7 +25,15 @@ def download_audio(link):
     ydl_opts = {
         'format': 'bestaudio/best',
         'outtmlp': '%(title)s.%(ext)s',
-        'merge_output_format': 'mp3'
+        "postprocessors": [{
+            "key": "FFmpegExtractAudio",
+            'preferredcodec': 'mp3', 
+            'preferredquality': '192',
+        }, {
+        'key': 'EmbedThumbnail',           # Post-procesador para incrustar la miniatura
+        }],
+        'writethumbnail': True,
+        'addmetadata': True, 
     }
 
     try:
@@ -35,7 +43,7 @@ def download_audio(link):
             # info = ydl.extract_info(link, download=False)
             # title = info.get("title", None)
         
-        convert()
+       # convert()
 
         print("descarga completa")
 

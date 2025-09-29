@@ -33,6 +33,7 @@ def cleanup():
             remove(file)
         except OSError as e:
             print(f"Error al eliminar el archivo {file}: {e}")
+    
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -64,11 +65,12 @@ async def received_aud_data(request: Request):
     link_url = link["name_aud"]
 
     files = listdir()
-    file =  [file for file in files if file.endswith(".mp3")]
+    file =  [file for file in files if file.endswith(".mp3") or file.endswith(".webp")]
 
     if url_validator(link_url):
         if len(file) > 0:
             mark_for_deletion(file)
+           # mark_for_deletion(file[1])
             cleanup()
 
         download_audio(link_url)
@@ -112,8 +114,6 @@ async def download_audio_yt():
         print(file)
         mark_for_deletion(file)
         return FileResponse(file[0], filename=file[0])
-    else:
-        return RedirectResponse("/")
 
 @app.head("/timer")
 def timer():
