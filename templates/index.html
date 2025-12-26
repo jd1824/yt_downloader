@@ -50,6 +50,8 @@
 </style>
 
 <script>
+    
+   // const sleep = ms => new Promise(r => setTimeout(r, ms));
 
     function sender_data(){
         document.getElementById('vid_response').innerText="Preparando...";
@@ -74,7 +76,7 @@
     function return_video() {
         document.getElementById('vid').innerText="Descarga iniciada"
         document.location.replace("/redirect/video")
-    }
+        }
 
     function sender_aud_data() {
         document.getElementById('aud_response').innerText="Preparando...";
@@ -93,11 +95,14 @@
         .then(response => response.json())
         .then(data => document.getElementById('aud_response').innerText = data.received_data)
         .then(download_aud_btn.hidden = false)
+        //sleep(4000)
+        
     }
 
     function return_audio() {
         document.getElementById('aud').innerText="Descarga iniciada"
         document.location.replace("/redirect/audio")
+        setInterval("location.reload()", 5000)
         //location.reload()
        // document.getElementById("aud").innerText =
     }

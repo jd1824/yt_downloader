@@ -1,5 +1,4 @@
 import yt_dlp
-from downloader.convert import convert
 from os import listdir
 
 def download_video(link):
@@ -28,7 +27,7 @@ def download_audio(link):
         "postprocessors": [{
             "key": "FFmpegExtractAudio",
             'preferredcodec': 'mp3', 
-            'preferredquality': '192',
+            #'preferredquality': '160',
         }, {
         'key': 'EmbedThumbnail',           # Post-procesador para incrustar la miniatura
         }],
@@ -40,7 +39,8 @@ def download_audio(link):
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([link])
             #print(ydl.params)
-            # info = ydl.extract_info(link, download=False)
+           # info = ydl.extract_info(link, download=False)
+           # print(info)
             # title = info.get("title", None)
         
        # convert()
