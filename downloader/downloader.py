@@ -26,7 +26,6 @@ def download_audio(link):
         'outtmlp': '%(title)s.%(ext)s',
         "postprocessors": [{
             "key": "FFmpegExtractAudio",
-            'preferredcodec': 'mp3', 
             #'preferredquality': '160',
         }, {
         'key': 'EmbedThumbnail',           # Post-procesador para incrustar la miniatura
@@ -38,19 +37,8 @@ def download_audio(link):
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([link])
-            #print(ydl.params)
-           # info = ydl.extract_info(link, download=False)
-           # print(info)
-            # title = info.get("title", None)
-        
-       # convert()
 
         print("descarga completa")
 
     except yt_dlp.DownloadError as e:
         print("hubo problemas {e}")
-
-
-if __name__ == "__main__":
-    link = str(input("Pon la url del video: ")).strip()
-    download_video(link=link)

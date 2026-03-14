@@ -50,8 +50,6 @@
 </style>
 
 <script>
-    
-   // const sleep = ms => new Promise(r => setTimeout(r, ms));
 
     function sender_data(){
         document.getElementById('vid_response').innerText="Preparando...";
@@ -75,7 +73,7 @@
 
     function return_video() {
         document.getElementById('vid').innerText="Descarga iniciada"
-        document.location.replace("/redirect/video")
+        document.location.replace("/download/video")
         }
 
     function sender_aud_data() {
@@ -95,16 +93,13 @@
         .then(response => response.json())
         .then(data => document.getElementById('aud_response').innerText = data.received_data)
         .then(download_aud_btn.hidden = false)
-        //sleep(4000)
         
     }
 
     function return_audio() {
         document.getElementById('aud').innerText="Descarga iniciada"
-        document.location.replace("/redirect/audio")
+        document.location.replace("/download/audio")
         setInterval("location.reload()", 5000)
-        //location.reload()
-       // document.getElementById("aud").innerText =
     }
 
 </script>
@@ -126,24 +121,6 @@
     <button onclick="return_audio()" class="button secondary"  id="download_aud_btn" hidden>Descargar audio</button>
     <p id="aud_response"></p>
     <p id="aud"></p>
-
-
-    <script>
-        const prepare_vid_btn = document.getElementById("prepare_vid_btn")
-        const download_vid_btn = document.getElementById("download_vid_btn")
-
-        const prepare_aud_btn = document.getElementById("prepare_aud_btn")
-        const download_aud_btn = document.getElementById("download_aud_btn")
-
-        // prepare_aud_btn.addEventListener("click", function() {
-        //     //download_aud_btn.disabled = false
-        //     download_aud_btn.hidden = false
-        // })
-
-        // download_aud_btn.addEventListener("click", function() {
-        //     download_aud_btn.disabled = true
-        // })
-    </script>
 
 </body>
 </html>

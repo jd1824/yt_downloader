@@ -1,15 +1,9 @@
 from fastapi import FastAPI, Request
-from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from downloader.downloader import download_video, download_audio
 from downloader.validator import url_validator
-#from downloader.filtro import eliminar_video
 from fastapi.templating import Jinja2Templates
 from os import listdir, remove
-# import asyncio
-# import time
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from apscheduler.jobstores.memory import MemoryJobStore 
-#from pydantic import BaseMode
 
 app = FastAPI()
 
@@ -21,6 +15,8 @@ def mark_for_deletion(filename):
     with open(".delete_list", "a") as f:
         if len(filename) > 0:
             f.write(filename[0] + "\n")
+
+
 
 def cleanup():
     with open(".delete_list", "r") as f:
@@ -65,12 +61,11 @@ async def received_aud_data(request: Request):
     link_url = link["name_aud"]
 
     files = listdir()
-    file =  [file for file in files if file.endswith(".mp3") or file.endswith(".webp")]
+    file =  [file for file in files if file.endswith(".opus") or file.endswith(".ogx")]
 
     if url_validator(link_url):
         if len(file) > 0:
             mark_for_deletion(file)
-           # mark_for_deletion(file[1])
             cleanup()
 
         download_audio(link_url)
@@ -79,18 +74,8 @@ async def received_aud_data(request: Request):
     else:
         return JSONResponse({'received_data': 'Ingrese una url valida'})
 
-
-@app.get("/redirect/video")
-def redirect_video():
-    return RedirectResponse(url="/download/video", status_code=302)
-
-@app.get("/redirect/audio")
-def redirect_audio():
-    return RedirectResponse(url="/download/audio", status_code=302)
-
 @app.get("/download/video")
 async def download_vid():
-    #id2 = id.replace(r"https%3A//www.youtube.com/watch%3Fv%3D", "")
     files = listdir()
     file =  [file for file in files if file.endswith(".mp4")]
     if len(file) > 0:
@@ -100,27 +85,16 @@ async def download_vid():
         return FileResponse(file[0], filename=file[0])
     
     else:
-        return RedirectResponse("/")
-    # finally:
-    #     await asyncio.sleep(0)
-    #     remove(file[0])
+        return "error"
 
 @app.get("/download/audio")
 async def download_audio_yt():
-    #id2 = id.replace(r"https%3A//www.youtube.com/watch%3Fv%3D", "")
     files = listdir()
-    file =  [file for file in files if file.endswith(".mp3")]
+    file =  [file for file in files if file.endswith(".opus") or file.endswith("ogx")]
     if len(file) > 0:
         print(file)
+        cleanup()
         mark_for_deletion(file)
         return FileResponse(file[0], filename=file[0])
-
-@app.head("/timer")
-def timer():
-    return "hola mundo"
-    
-# @app.on_event("startup")
-# async def start_scheduler():
-#     scheduler = AsyncIOScheduler(jobstores={'default': MemoryJobStore()})
-#     scheduler.add_job(cleanup, 'interval', seconds=1)
-#     scheduler.start()
+    else:
+        return None
